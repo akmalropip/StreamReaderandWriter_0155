@@ -151,3 +151,71 @@ void hapusBarang() {
         cout << ">> Nomor barang tidak valid!\n";
     }
 }
+// 4. PENGUJIAN PADA FUNGSI MAIN
+int main() {
+    TokoElektronik gibranJaya;
+    int pilihan;
+
+    // Sistem Menu Utama berjalan dalam looping
+    do {
+        // READ: Membaca dan menampilkan daftar barang secara otomatis
+        tampilkanGudang(); 
+
+        cout << "MENU MANAJEMEN TOKO GIBRAN JAYA" << endl;
+        cout << "1. Tambah Barang Baru (Create)" << endl;
+        cout << "2. Ubah Data Barang (Update)" << endl;
+        cout << "3. Hapus Barang (Delete)" << endl;
+        cout << "4. Simulasi Etalase (Test Exception Handling)" << endl;
+        cout << "0. Keluar Program" << endl;
+        cout << "Pilihan Anda: ";
+        cin >> pilihan;
+        
+        // Membersihkan karakter newline/enter dari buffer input
+        cin.ignore(); 
+
+        switch (pilihan) {
+            case 1:
+                tambahBarang();
+                break;
+            case 2:
+                ubahBarang();
+                break;
+            case 3:
+                hapusBarang();
+                break;
+            case 4:
+                cout << "\n--- Menjalankan Simulasi Etalase ---" << endl;
+                
+                // Skenario 1: Pengambilan barang di rak indeks ke-1 (Harus Sukses)
+                cout << "[Skenario 1] Mengambil barang di Rak 1..." << endl;
+                try {
+                    string barang1 = gibranJaya.ambilProduk(1);
+                    cout << "Sukses: Mendapatkan " << barang1 << endl;
+                } catch (const string& e) {
+                    cout << "Error: " << e << endl;
+                }
+
+                // Skenario 2: Pengambilan barang di rak indeks ke-5 (Harus Gagal & Muncul Error Kustom)
+                cout << "\n[Skenario 2] Mengambil barang di Rak 5..." << endl;
+                try {
+                    string barang2 = gibranJaya.ambilProduk(5);
+                    cout << "Sukses: Mendapatkan " << barang2 << endl;
+                } catch (const string& e) {
+                    cout << "Exception Tertangkap: " << e << endl;
+                }
+                
+                cout << "------------------------------------\n";
+                cout << "Tekan Enter untuk melanjutkan...";
+                cin.get(); // Pause sejenak agar user bisa membaca output
+                break;
+            case 0:
+                cout << "Keluar dari program. Terima kasih!\n";
+                break;
+            default:
+                cout << "Pilihan tidak valid, silakan coba lagi.\n";
+                break;
+        }
+    } while (pilihan != 0);
+
+    return 0;
+}
