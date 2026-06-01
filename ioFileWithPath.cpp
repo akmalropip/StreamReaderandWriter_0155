@@ -3,7 +3,6 @@
 #include <string>
 using namespace std;
 
-
 int main()
 {
 
@@ -16,9 +15,9 @@ int main()
 
     //membuat file dalam mode menulis
     ofstream outfile;
+
     //menunjuk ke sebuah nama file dengan ekstentsi txt
     outfile.open(NamaFile + ".txt", ios::out);
-
     cout << ">= Menulis file, \\'q\\' untuk keluar" << endl;
 
     //looping untuk menulis isi file
@@ -31,6 +30,7 @@ int main()
         
         //kondisi jika baris hanya berisi huruf q
         if (baris == "q") break;
+        
         //menulis dan memasukkan nilai dari baris ke dalam file
         outfile << baris << endl;
 
@@ -59,4 +59,7 @@ int main()
         //menutup file jika telah selesai di loop
         infile.close();
     }
-    
+        //kondisi jika file tidak ada
+    else cout << "Unable to open file";
+    return 0;
+}
