@@ -29,9 +29,9 @@ int main()
         outfile << baris << endl;
 
     }
-
     //menutup file setelah penulisan selesai
     outfile.close();
+
     //membuka file dalam mode membaca
     ifstream infile;
     //menunjuk ke sebuah file
@@ -52,4 +52,5 @@ int main()
     else cout << "Unable to open file";
 
     return 0;
+    
 }
