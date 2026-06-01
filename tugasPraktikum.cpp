@@ -23,4 +23,15 @@ public:
 
     // Method Public: Mengambil produk dengan parameter size_t
     string ambilProduk(size_t nomorRak) {
-     
+           // 2. EXCEPTION HANDLING
+        try {
+            // Menggunakan .at() untuk mengakses indeks
+            return etalase.at(nomorRak);
+        }
+        catch (const out_of_range& e) {
+            // Menangkap error bawaan dan melempar (throw) pesan error kustom
+            string pesanError = "Gagal Mengambil Barang : Rak nomor " + to_string(nomorRak) + " kosong atau tidak tersedia!";
+            throw pesanError; 
+        }
+    }
+};
