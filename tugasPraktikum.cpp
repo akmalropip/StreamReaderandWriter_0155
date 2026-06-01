@@ -20,3 +20,7 @@ public:
         etalase[1] = "Router MikroTik";
         etalase[2] = "Kabel LAN & RJ45";
     }
+
+    // Method Public: Mengambil produk dengan parameter size_t
+    string ambilProduk(size_t nomorRak) {
+     
