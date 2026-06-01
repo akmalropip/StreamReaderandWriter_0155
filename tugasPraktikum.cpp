@@ -35,3 +35,119 @@ public:
         }
     }
 };
+
+// 3. FITUR MANAJEMEN GUDANG BERBASIS FILE
+const string NAMA_FILE = "gudang.txt";
+
+// Fungsi Bantuan: Menampilkan daftar barang (READ)
+void tampilkanGudang() {
+    ifstream infile(NAMA_FILE, ios::in);
+    string baris;
+    int nomor = 1;
+
+    cout << "\n=== DAFTAR BARANG DI GUDANG ===" << endl;
+    if (infile.is_open()) {
+        while (getline(infile, baris)) {
+            cout << nomor << ". " << baris << endl;
+            nomor++;
+        }
+        infile.close();
+        if (nomor == 1) {
+            cout << "(Gudang masih kosong)" << endl;
+        }
+    } else {
+        cout << "(File gudang.txt belum ada / kosong)" << endl;
+    }
+    cout << "===============================\n";
+}
+
+// Fungsi Bantuan: Menambah barang (CREATE)
+void tambahBarang() {
+    ofstream outfile(NAMA_FILE, ios::app); // mode append agar data lama tidak tertimpa
+    string namaBarang;
+    
+    cout << "Masukkan nama barang baru: ";
+    getline(cin, namaBarang);
+    
+    if (outfile.is_open()) {
+        outfile << namaBarang << endl;
+        cout << ">> Berhasil menambahkan '" << namaBarang << "' ke gudang!\n";
+        outfile.close();
+    } else {
+        cout << ">> Gagal membuka file untuk menulis!\n";
+    }
+}
+
+// Fungsi Bantuan: Membaca isi file ke dalam vector
+vector<string> bacaFileKeVector() {
+    vector<string> dataBarang;
+    ifstream infile(NAMA_FILE, ios::in);
+    string baris;
+    if (infile.is_open()) {
+        while (getline(infile, baris)) {
+            dataBarang.push_back(baris);
+        }
+        infile.close();
+    }
+    return dataBarang;
+}
+
+// Fungsi Bantuan: Menulis vector kembali ke file
+void tulisVectorKeFile(const vector<string>& dataBarang) {
+    ofstream outfile(NAMA_FILE, ios::out); // mode out untuk menimpa file
+    if (outfile.is_open()) {
+        for (const string& barang : dataBarang) {
+            outfile << barang << endl;
+        }
+        outfile.close();
+    }
+}
+
+// Fungsi Bantuan: Mengubah data barang (UPDATE)
+void ubahBarang() {
+    vector<string> dataBarang = bacaFileKeVector();
+    if (dataBarang.empty()) {
+        cout << ">> Gudang kosong, tidak ada yang bisa diubah!\n";
+        return;
+    }
+
+    int indeks;
+    cout << "Pilih nomor barang yang ingin diubah: ";
+    cin >> indeks;
+    cin.ignore(); // Membersihkan sisa enter
+
+    if (indeks > 0 && indeks <= dataBarang.size()) {
+        cout << "Masukkan nama barang pengganti: ";
+        string namaBaru;
+        getline(cin, namaBaru);
+        
+        dataBarang[indeks - 1] = namaBaru;
+        tulisVectorKeFile(dataBarang);
+        cout << ">> Barang berhasil diubah!\n";
+    } else {
+        cout << ">> Nomor barang tidak valid!\n";
+    }
+}
+
+// Fungsi Bantuan: Menghapus data barang (DELETE)
+void hapusBarang() {
+    vector<string> dataBarang = bacaFileKeVector();
+    if (dataBarang.empty()) {
+        cout << ">> Gudang kosong, tidak ada yang bisa dihapus!\n";
+        return;
+    }
+
+    int indeks;
+    cout << "Pilih nomor barang yang ingin dihapus: ";
+    cin >> indeks;
+    cin.ignore(); 
+
+    if (indeks > 0 && indeks <= dataBarang.size()) {
+        cout << ">> Menghapus '" << dataBarang[indeks - 1] << "'...\n";
+        dataBarang.erase(dataBarang.begin() + (indeks - 1));
+        tulisVectorKeFile(dataBarang);
+        cout << ">> Barang berhasil dihapus!\n";
+    } else {
+        cout << ">> Nomor barang tidak valid!\n";
+    }
+}
